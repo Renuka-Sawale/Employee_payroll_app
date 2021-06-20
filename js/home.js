@@ -1,13 +1,21 @@
+let empPayrollList;
 window.addEventListener('DOMContentLoaded', (event) => {
+    empPayrollList = getEmployeePayrollDataFromStorage();
+    document.querySelector(".emp-count").textContent = empPayrollList.length;
     createInnerHtml();
 });
 
-/*Template literal ES6 features*/
+const getEmployeePayrollDataFromStorage = () => {
+    return localStorage.getItem('EmployeePayrollList') ?
+                        JSON.parse(localStorage.getItem('EmployeePayrollList')) : [];
+}
+
 const createInnerHtml = () => {
-    const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
+     const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
                        "<th>Salary</th><th>Start Date</th><th>Actions</th>";
+        if (empPayrollList.length ==0) return;
         let innerHtml = `${headerHtml}`;
-        let empPayrollList = createEmployeePayrollJSON();
+        //let empPayrollList = createEmployeePayrollJSON();
         for (const empPayrollData of empPayrollList) {
             innerHtml = `${innerHtml}
             <tr><!--Hard Coding only test purpose -->
@@ -26,35 +34,6 @@ const createInnerHtml = () => {
             `;
         }
         document.querySelector('#table-display').innerHTML = innerHtml;
-    }
-const createEmployeePayrollJSON = () => {
-    let empPayrollListLocal = [
-        {
-            _name:'Samarth',
-            _gender: 'male',
-            _department: [
-                'Engineering'
-            ],
-            _salary:'500000',
-            _startDate: '20 Oct 2017',
-            _note: '',
-            _id: new Date().getTime(),
-            _profilePic: '../assets/profile-images/Ellipse -2.png'
-        },
-        {
-            _name:'Reena',
-            _gender: 'female',
-            _department: [
-                'Sales'
-            ],
-            _salary:'400000',
-            _startDate: '20 Sept 2019',
-            _note: '',
-            _id: new Date().getTime() + 1,
-            _profilePic: '../assets/profile-images/Ellipse -1.png'   
-        }
-    ];
-    return empPayrollListLocal;
 }
 
 const getDeptHtml = (deptList)=> {
